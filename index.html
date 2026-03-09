@@ -32,25 +32,26 @@
   </head>
   <body>
     <a-scene
+      embedded
       arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
       vr-mode-ui="enabled: false"
       background="color: transparent"
     >
       <!-- hiroマーカー -->
       <a-marker preset="hiro">
-        <!-- 75坪畑モデル -->
+        <!-- 畑モデル（高さを小さくしてカメラ背景を見せる） -->
         <a-box
-          position="8 0.05 7.75"
+          position="8 0 7.75"
           width="16"
-          height="0.1"
+          height="0.02"
           depth="15.5"
           color="#228B22"
         ></a-box>
         <!-- 外枠 -->
         <a-box
-          position="8 0.12 7.75"
+          position="8 0.025 7.75"
           width="16"
-          height="0.02"
+          height="0.005"
           depth="15.5"
           color="#006400"
         ></a-box>
