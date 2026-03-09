@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>AR 75坪畑（カメラ背景版）</title>
+    <title>AR 75坪畑（iPhone対応版）</title>
     <!-- A-Frame と AR.js -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
@@ -17,11 +17,11 @@
       }
 
       a-scene {
+        width: 100vw;
+        height: 100vh;
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
         z-index: 9999;
       }
 
@@ -32,24 +32,23 @@
   </head>
   <body>
     <a-scene
-      embedded
-      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      arjs="trackingMethod: best; sourceType: webcam; sourceWidth: window.innerWidth; sourceHeight: window.innerHeight; debugUIEnabled: false;"
       vr-mode-ui="enabled: false"
       background="color: transparent"
     >
       <!-- hiroマーカー -->
       <a-marker preset="hiro">
-        <!-- 畑モデル（高さを小さくしてカメラ背景を見せる） -->
+        <!-- 畑モデル：高さ0.01に小さくしてカメラ背景を見せる -->
         <a-box
-          position="8 0 7.75"
+          position="8 0.01 7.75"
           width="16"
-          height="0.02"
+          height="0.01"
           depth="15.5"
           color="#228B22"
         ></a-box>
         <!-- 外枠 -->
         <a-box
-          position="8 0.025 7.75"
+          position="8 0.015 7.75"
           width="16"
           height="0.005"
           depth="15.5"
