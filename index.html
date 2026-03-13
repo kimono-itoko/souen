@@ -2,10 +2,13 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>AR 75坪畑（Chrome/iPhone対応版）</title>
-    <!-- A-Frame と AR.js -->
+    <title>AR 75坪畑（MindAR.js版）</title>
+
+    <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <!-- MindAR.js A‑Frame版 -->
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image-aframe.prod.js"></script>
+
     <style>
       html,
       body {
@@ -14,7 +17,7 @@
         width: 100vw;
         height: 100vh;
         overflow: hidden;
-        background: transparent;
+        background: black;
       }
       a-scene {
         width: 100vw;
@@ -22,39 +25,38 @@
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 9999;
       }
     </style>
   </head>
+
   <body>
+    <!-- MindAR.js のシーン -->
     <a-scene
+      mindar-image="imageTargetSrc: ./hiro.mind; maxTrack: 1;"
+      color-space="sRGB"
       embedded
       vr-mode-ui="enabled: false"
-      arjs="trackingMethod: best;
-          sourceType: webcam;
-          sourceWidth: window.innerWidth;
-          sourceHeight: window.innerHeight;
-          debugUIEnabled: false;"
-      background="color: transparent"
+      device-orientation-permission-ui="enabled: true"
     >
-      <!-- hiroマーカー -->
-      <a-marker preset="hiro">
-        <!-- 畑モデル：高さを最小にしてカメラ背景を見せる -->
+      <!-- 畑モデル -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <!-- 緑いろの平面 -->
         <a-box
-          position="8 0.005 7.75"
+          position="0 0 0"
           width="16"
-          height="0.005"
+          height="0.01"
           depth="15.5"
           color="#228B22"
         ></a-box>
+        <!-- ふち -->
         <a-box
-          position="8 0.0075 7.75"
+          position="0 0.01 0"
           width="16"
-          height="0.0025"
+          height="0.005"
           depth="15.5"
           color="#006400"
         ></a-box>
-      </a-marker>
+      </a-entity>
 
       <!-- カメラ -->
       <a-entity camera></a-entity>
