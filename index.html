@@ -6,7 +6,7 @@
 
     <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <!-- MindAR.js A‑Frame版 -->
+    <!-- MindAR.js A-Frame版 -->
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image-aframe.prod.js"></script>
 
     <style>
@@ -30,7 +30,7 @@
   </head>
 
   <body>
-    <!-- MindAR.js のシーン -->
+    <!-- MindAR.jsシーン -->
     <a-scene
       mindar-image="imageTargetSrc: ./hiro.mind; maxTrack: 1;"
       color-space="sRGB"
@@ -38,9 +38,9 @@
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: true"
     >
-      <!-- 畑モデル -->
+      <!-- hiroマーカー上に畑モデル -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <!-- 緑いろの平面 -->
+        <!-- 畑の緑いろ平面 -->
         <a-box
           position="0 0 0"
           width="16"
@@ -48,7 +48,7 @@
           depth="15.5"
           color="#228B22"
         ></a-box>
-        <!-- ふち -->
+        <!-- 畑のふち -->
         <a-box
           position="0 0.01 0"
           width="16"
