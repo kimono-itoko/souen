@@ -1,57 +1,145 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <title>MindAR Test - Souen</title>
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no"
+  >
 
-    <!-- A-Frame -->
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.0/dist/aframe/build/aframe.min.js"></script>
-    <!-- MindAR -->
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.0/dist/aframe/build/mindar-image-aframe.min.js"></script>
+  <title>伊と幸 ARテスト</title>
 
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
-      #loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-family: sans-serif;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="loading">カメラを起動しています...</div>
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
-    <a-scene
-      mindar-image="imageTargetSrc: ./hiro.mind;"
-      embedded
-      color-space="sRGB"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: true"
-      background-color="black"
+  <!-- MindAR -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+      font-family: sans-serif;
+    }
+
+    #status {
+      position: fixed;
+      z-index: 10;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 420px;
+      padding: 12px 16px;
+      box-sizing: border-box;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 8px;
+      text-align: center;
+      line-height: 1.5;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="status">
+    カメラの使用を許可してください
+  </div>
+
+  <a-scene
+    mindar-image="
+      imageTargetSrc: ./hiro.mind;
+      autoStart: true;
+      uiLoading: yes;
+      uiScanning: yes;
+      uiError: yes;
+    "
+    embedded
+    renderer="
+      colorManagement: true;
+      physicallyCorrectLights: true;
+      antialias: true;
+    "
+    color-space="sRGB"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+  >
+    <a-assets></a-assets>
+
+    <a-camera
+      position="0 0 0"
+      look-controls="enabled: false"
+    ></a-camera>
+
+    <a-entity
+      id="target"
+      mindar-image-target="targetIndex: 0"
     >
-      <!-- カメラ -->
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <!-- マーカー面に白い板 -->
+      <a-plane
+        position="0 0 0"
+        width="1"
+        height="1"
+        rotation="0 0 0"
+        material="
+          color: white;
+          opacity: 0.3;
+          transparent: true;
+        "
+      ></a-plane>
 
-      <!-- マーカー上に緑の箱 -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-box
-          position="0 0.5 0"
-          scale="0.5 0.5 0.5"
-          material="color: green;"
-        ></a-box>
-      </a-entity>
-    </a-scene>
+      <!-- 緑の箱 -->
+      <a-box
+        position="0 0.25 0.15"
+        width="0.4"
+        height="0.4"
+        depth="0.4"
+        material="color: #198754;"
+        animation="
+          property: rotation;
+          to: 0 360 0;
+          loop: true;
+          dur: 3000;
+          easing: linear;
+        "
+      ></a-box>
+    </a-entity>
 
-    <script>
-      // カメラ起動後にローディング非表示
-      document.querySelector("a-scene").addEventListener("renderstart", () => {
-        document.getElementById("loading").style.display = "none";
-      });
-    </script>
-  </body>
+    <a-entity light="type: ambient; intensity: 1.2"></a-entity>
+    <a-entity
+      light="type: directional; intensity: 1"
+      position="1 2 1"
+    ></a-entity>
+  </a-scene>
+
+  <script>
+    const scene = document.querySelector("a-scene");
+    const target = document.querySelector("#target");
+    const status = document.querySelector("#status");
+
+    scene.addEventListener("arReady", () => {
+      status.textContent =
+        "カメラが起動しました。Hiro画像を映してください。";
+    });
+
+    scene.addEventListener("arError", () => {
+      status.textContent =
+        "ARを起動できませんでした。カメラ許可とHTTPS接続を確認してください。";
+    });
+
+    target.addEventListener("targetFound", () => {
+      status.textContent = "認識しました！";
+    });
+
+    target.addEventListener("targetLost", () => {
+      status.textContent =
+        "画像を見失いました。Hiro画像を画面中央に映してください。";
+    });
+  </script>
+</body>
 </html>
